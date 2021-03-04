@@ -7,10 +7,10 @@ html, body, .container, #sidebar, #mapContainer{
   display: flex;
 }
 #sidebar{
-  background-color: blue;
+  background-color: grey;
   width: 320px;
 }
 #mapContainer{
-  background-color: pink;
+  background-color: white;
   flex-grow: 1;
 }

@@ -1,11 +1,4 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiYXNwOTA4OSIsImEiOiJja2xrMHk3ZW01Mmk2MnZucmFrM3podmh3In0.qZ1N12EiB17J56BQ5Oy5QQ'
-// dropping in basic points to mark off the huge sky scrapers
- $.getJSON('./data/community-fridges.json', function(fridges){
-   console.log(fridges)
-
- //looping it all to make points
-fridges.forEach(function(fridgerow){
- console.log(fridgerow.organization, fridgerow.location_type, fridgerow.instagram, fridgerow.url)
 
 //function to translate NYC land use codes
 var LandUseLookup = (code) => {
@@ -77,6 +70,7 @@ var LandUseLookup = (code) => {
       };
   }
 };
+
 // connecting to the datasource for the map and setting load view
 var map = new mapboxgl.Map({
   container: 'mapContainer', // container ID
@@ -86,15 +80,15 @@ var map = new mapboxgl.Map({
 //  pitch: 60, // pitch in degrees
   bearing: -60,
 });
+
 map.on('style.load', function (){
   //add the geo source
   map.addSource('57th_lots' , {
     type: 'geojson',
     data: '/data/57th_street.geojson'
-  });
-
-var nav = new mapboxgl.NavigationControl();
-  map.addControl(nav, 'top-left');
+});
+  var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-left');
 
   map.addLayer({
     'id': '57th_street_fill',
@@ -103,96 +97,58 @@ var nav = new mapboxgl.NavigationControl();
     'layout': {},
     'paint': {
         'fill-color': {
-          type: 'categorical',
-            property: 'LandUse',
-            stops: [
-              [
-                '01',
-                LandUseLookup(1).color,
-              ],
-              [
-                '02',
-                LandUseLookup(2).color,
-              ],
-              [
-                '03',
-                LandUseLookup(3).color,
-              ],
-              [
-                '04',
-                LandUseLookup(4).color,
-              ],
-              [
-                '05',
-                LandUseLookup(5).color,
-              ],
-              [
-                '06',
-                LandUseLookup(6).color,
-              ],
-              [
-                '07',
-                LandUseLookup(7).color,
-              ],
-              [
-                '08',
-                LandUseLookup(8).color,
-              ],
-              [
-                '09',
-                LandUseLookup(9).color,
-              ],
-              [
-                '10',
-                LandUseLookup(10).color,
-              ],
-              [
-                '11',
-                LandUseLookup(11).color,
-              ],
-          ]
+        type: 'categorical',
+        property: 'LandUse',
+        stops: [
+          [
+            '01',
+            LandUseLookup(1).color,
+          ],
+          [
+            '02',
+            LandUseLookup(2).color,
+          ],
+          [
+            '03',
+            LandUseLookup(3).color,
+          ],
+          [
+            '04',
+            LandUseLookup(4).color,
+          ],
+          [
+            '05',
+            LandUseLookup(5).color,
+          ],
+          [
+            '06',
+            LandUseLookup(6).color,
+          ],
+          [
+            '07',
+            LandUseLookup(7).color,
+          ],
+          [
+            '08',
+            LandUseLookup(8).color,
+          ],
+          [
+            '09',
+            LandUseLookup(9).color,
+          ],
+          [
+            '10',
+            LandUseLookup(10).color,
+          ],
+          [
+            '11',
+            LandUseLookup(11).color,
+          ],
+
+        ]
       },
       'fill-outline-color': '#ccc',
-      'fill-opacity': 0.6
-    },
+      'fill-opacity': 0.8
+    }
   });
-
-//Making Pop-up features
 })
-map.on('mousemove', function (e) {
-  // query for the features under the mouse, but only in the lots layer
-  var features = map.queryRenderedFeatures(e.point, {
-      layers: ['brooklyn-cd6-fill'],
-  });
-
-  if (features.length > 0) {
-    // show the popup
-    // Populate the popup and set its coordinates
-    // based on the feature found.
-
-    var hoveredFeature = features[0]
-    var address = hoveredFeature.properties.Address
-    var landuseDescription = LandUseLookup(parseInt(hoveredFeature.properties.LandUse)).description
-
-    var popupContent = `
-      <div>
-        ${address}<br/>
-        ${landuseDescription}
-      </div>
-    `
-
-    popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map);
-
-    // set this lot's polygon feature as the data for the highlight source
-    map.getSource('highlight-feature').setData(hoveredFeature.geometry);
-
-    // show the cursor as a pointer
-    map.getCanvas().style.cursor = 'pointer';
-  } else {
-    // remove the Popup
-    popup.remove();
-
-    map.getCanvas().style.cursor = '';
-  }
-
-}
