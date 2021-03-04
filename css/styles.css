@@ -1,0 +1,16 @@
+html, body, .container, #sidebar, #mapContainer{
+  height: 100%;
+  margin: 0;
+
+}
+.container{
+  display: flex;
+}
+#sidebar{
+  background-color: blue;
+  width: 320px;
+}
+#mapContainer{
+  background-color: pink;
+  flex-grow: 1;
+}
