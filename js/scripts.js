@@ -8,7 +8,7 @@ var LandUseLookup = (code) => {
         color: '#f4f455',
         description: '1 & 2 Family',
       };
-    case 2-3:
+    case 2:
       return {
         color: '#f7d496',
         description: 'Multifamily Walk-up',
@@ -85,7 +85,7 @@ map.on('style.load', function (){
   //add the geo source
   map.addSource('57th_lots' , {
     type: 'geojson',
-    data: '/data/57th_street.geojson'
+    data: 'data/57th_street.geojson'
 });
   var nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'top-left');
