@@ -70,6 +70,98 @@ for (i = 0; i < layers.length; i++) {
 
 });
 
+// Adding 3d Buildings
+map.on('load', function () {
+// Insert the layer beneath any symbol layer.
+var layers = map.getStyle().layers;
+
+var labelLayerId;
+for (var i = 0; i < layers.length; i++) {
+if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+labelLayerId = layers[i].id;
+break;
+}
+}
+
+map.addLayer(
+{
+'id': '3d-buildings',
+'source': 'composite',
+'source-layer': 'building',
+'filter': ['==', 'extrude', 'true'],
+'type': 'fill-extrusion',
+'minzoom': 15,
+'paint': {
+'fill-extrusion-color': '#aaa',
+
+// use an 'interpolate' expression to add a smooth transition effect to the
+// buildings as the user zooms in
+'fill-extrusion-height': [
+'interpolate',
+['linear'],
+['zoom'],
+15,
+0,
+15.05,
+['get', 'height']
+],
+'fill-extrusion-base': [
+'interpolate',
+['linear'],
+['zoom'],
+15,
+0,
+15.05,
+['get', 'min_height']
+],
+'fill-extrusion-opacity': 0.6
+}
+},
+labelLayerId
+);
+});
+
+// Adding a interactive feature
+var popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false
+});
+map.on('mousemove', function (e) {
+
+  var features = map.queryRenderedFeatures(e.point, {
+      layers: ['57th_street_floors_fill'],
+  });
+
+  if (features.length > 0) {
+
+    var hoveredFeature = features[0];
+    var Address = hoveredFeature.properties.Address;
+    var NumFloors = hoveredFeature.properties.NumFloors;
+    var FAR = hoveredFeature.properties.FAR;
+    var OwnerName = hoveredFeature.properties.OwnerName;
+
+    var popupContent = `
+      <div>
+        <b> Building Information</b><br/>
+        ${Address}<br/>
+        Number of Floors: ${NumFloors}<br/>
+        Floor Area Ratio: ${FAR}<br/>
+        Building Owner: ${OwnerName}
+      </div>
+    `
+    popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map);
+    map.getSource('57th_street').setData(hoveredFeature.geometry);
+    map.getCanvas().style.cursor = 'pointer';
+  }
+  else {
+    popup.remove();
+    map.getCanvas().style.cursor = '';
+    // map.getSource('57th_street').setData({
+    //       "type": "geojson",
+    //       "features": []
+  ;}
+
+})
 // // adding in the skyscraper points
 // //create the array
 //   $.getJSON('./data/landmark_points.json', function(landmarks){
