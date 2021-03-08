@@ -70,14 +70,13 @@ for (i = 0; i < layers.length; i++) {
 
 });
 
-// adding in the skyscraper points
-//create the array
-  $.getJSON('./data/landmark_points.json', function(landmarks){
-    console.log(landmarks)
-
-  //looping it all to make points
-
-landmarks.forEach(function(landmarkrow){
-  console.log(landmarkrow.organization, fridgerow.Address)
-
-})
+// // adding in the skyscraper points
+// //create the array
+//   $.getJSON('./data/landmark_points.json', function(landmarks){
+//     console.log(landmarks)
+//
+//   //looping it all to make points
+//
+// landmarks.forEach(function(landmarkrow){
+//   console.log(landmarkrow.organization, fridgerow.Address)
+// })
