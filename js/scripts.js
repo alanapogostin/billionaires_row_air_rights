@@ -30,7 +30,7 @@ map.on('style.load', function (){
         'fill-color': [
           'interpolate',
           ['linear'],
-          ['get', 'NumFloors'],
+          ['get', 'numfloors'],
           0,
           '#fef0d9',
           20,
@@ -135,18 +135,18 @@ map.on('mousemove', function (e) {
   if (features.length > 0) {
 
     var hoveredFeature = features[0];
-    var Address = hoveredFeature.properties.Address;
-    var NumFloors = hoveredFeature.properties.NumFloors;
-    var FAR = hoveredFeature.properties.FAR;
-    var OwnerName = hoveredFeature.properties.OwnerName;
+    var address = hoveredFeature.properties.address;
+    var numfloors = hoveredFeature.properties.numfloors;
+    var far = hoveredFeature.properties.far;
+    var ownername = hoveredFeature.properties.ownername;
 
     var popupContent = `
       <div>
         <b> Building Information</b><br/>
-        ${Address}<br/>
-        Number of Floors: ${NumFloors}<br/>
-        Floor Area Ratio: ${FAR}<br/>
-        Building Owner: ${OwnerName}
+        ${address}<br/>
+        Number of Floors: ${numfloors}<br/>
+        Floor Area Ratio: ${far}<br/>
+        Building Owner: ${ownername}
       </div>
     `
     popup.setLngLat(e.lngLat).setHTML(popupContent).addTo(map);
@@ -156,19 +156,29 @@ map.on('mousemove', function (e) {
   else {
     popup.remove();
     map.getCanvas().style.cursor = '';
-    // map.getSource('57th_street').setData({
-    //       "type": "geojson",
-    //       "features": []
   ;}
 
 })
 // // adding in the skyscraper points
-// //create the array
-//   $.getJSON('./data/landmark_points.json', function(landmarks){
-//     console.log(landmarks)
+// map.on('style.load', function (){
+//   //add the geo source
+//   map.addSource('landmarks' , {
+//     type: 'json',
+//     data: 'data/landmark_points.json'
+//
+//
+// });
+// $.getJSON('data/landmark_points.json', function(landmark){
+//     console.log(landmark)
 //
 //   //looping it all to make points
 //
-// landmarks.forEach(function(landmarkrow){
-//   console.log(landmarkrow.organization, fridgerow.Address)
-// })
+// landmark.forEach(function(landmarkrow){
+//   console.log(landmarkrow.address)
+//
+//   new mapboxgl.Marker({
+//    })
+//      .setLngLat([landmarkrow.coordinates]) // use [] to make it an array
+//      // .setPopup(new mapboxgl.Popup().setHTML(html))
+//      .addTo(map);
+//    })}
